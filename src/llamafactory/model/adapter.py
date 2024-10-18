@@ -54,7 +54,7 @@ def _setup_full_tuning(
         else:
             param.requires_grad_(False)
 
-
+# TODO：学习
 def _setup_freeze_tuning(
     model: "PreTrainedModel",
     finetuning_args: "FinetuningArguments",
@@ -202,7 +202,7 @@ def _setup_lora_tuning(
             target_modules = find_expanded_modules(model, target_modules, finetuning_args.freeze_trainable_layers)
 
         target_modules = patch_target_modules(model.config, finetuning_args, target_modules)
-
+        # TODO：学习
         if (
             finetuning_args.use_dora
             and getattr(model, "quantization_method", None) is not None

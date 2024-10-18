@@ -21,7 +21,7 @@ from typing import TYPE_CHECKING, List, Optional, Tuple, Union
 from typing_extensions import override
 
 from .data_utils import SLOTS
-from .tool_utils import get_tool_utils
+from .tool_utils import get_tool_utils, get_observation_utils, get_system_utils
 
 
 if TYPE_CHECKING:
@@ -128,6 +128,39 @@ class FunctionFormatter(Formatter):
 
         return elements
 
+@dataclass
+class ObservationFormatter(StringFormatter):
+    def __post_init__(self):
+        self.observation_utils = get_observation_utils(self.tool_format)
+
+    @override
+    def apply(self, **kwargs) -> SLOTS:
+        content = kwargs.pop("content")
+        if isinstance(content, str):
+            content = self.observation_utils(content)
+        else:
+            raise RuntimeError("Input must be string, but got {}".format(content))
+
+        return super().apply(content=content)
+    
+@dataclass
+class SystemFormatter(StringFormatter):
+    def __post_init__(self):
+        if self.tool_format is None:
+            self.tool_format='default'
+        self.system_utils = get_system_utils(self.tool_format)
+
+    @override
+    def apply(self, **kwargs) -> SLOTS:
+        content = kwargs.pop("content")
+        tool_text = kwargs.pop("tool_text")
+        if isinstance(content, str):
+            if tool_text:
+                content = self.system_utils(content=content, tool_text=tool_text)
+        else:
+            raise RuntimeError("Input must be string, but got {}".format(content))
+
+        return super().apply(content=content)
 
 @dataclass
 class ToolFormatter(Formatter):
