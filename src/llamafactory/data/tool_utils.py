@@ -253,7 +253,6 @@ def default_system_utils(content, tool_text):
     return content + "\n\n" + tool_text
 
 def llama3_system_utils(content, tool_text):
-    content = "Environment: ipython\n\n" + content
     return content
 
 TOOLS = {
