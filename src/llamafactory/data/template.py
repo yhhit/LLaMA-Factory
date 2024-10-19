@@ -751,7 +751,7 @@ _register_template(
     format_tools=ToolFormatter(tool_format="llama3"),
     format_function=FunctionFormatter(slots=[
             (
-                "<|python_tag|>{{function_content}}<eom_id>"
+                "<|python_tag|>{{function_content}}"
             ),
             {"eos_token"}
             ],
