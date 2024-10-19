@@ -742,14 +742,20 @@ _register_template(
     format_observation=ObservationFormatter(
         slots=[
             (
-                "<|start_header_id|>tool<|end_header_id|>\n\n{{content}}<|eot_id|>"
+                "<|start_header_id|>ipython<|end_header_id|>\n\n{{content}}<|eot_id|>"
                 "<|start_header_id|>assistant<|end_header_id|>\n\n"
             )
         ],
         tool_format="llama3"
     ),
     format_tools=ToolFormatter(tool_format="llama3"),
-    format_function=FunctionFormatter(slots=[{"eos_token"}], tool_format="llama3"),
+    format_function=FunctionFormatter(slots=[
+            (
+                "<|python_tag|>{{function_content}}<eom_id>"
+            ),
+            {"eos_token"}
+            ],
+            tool_format="llama3"),
     format_prefix=EmptyFormatter(slots=[{"bos_token"}]),
     stop_words=["<|eot_id|>"],
     replace_eos=True,

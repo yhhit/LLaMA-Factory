@@ -118,8 +118,10 @@ class FunctionFormatter(Formatter):
         elements = []
         for name, arguments in functions:
             for slot in self.slots:
-                if isinstance(slot, str):
-                    slot = slot.replace("{{name}}", name).replace("{{arguments}}", arguments)
+                if isinstance(slot, str) and ("{{arguments}}" in slot):
+                    function_content = slot.replace("{{name}}", name).replace("{{arguments}}", arguments)
+                elif isinstance(slot, str) and ("{{function_content}}" in slot):
+                    slot = slot.replace("{{function_content}}", function_content)
                     elements.append(slot)
                 elif isinstance(slot, (dict, set)):
                     elements.append(slot)
