@@ -237,12 +237,16 @@ def default_observation_utils(content):
 
 
 def llama3_observation_utils(content):
-    content = json.dumps(
-                {
-                    "output":content
-                },
-                ensure_ascii=False,
-            )
+    try:
+        json.loads(content)
+        return content
+    except ValueError:
+        content = json.dumps(
+                    {
+                        "output": content
+                    },
+                    ensure_ascii=False,
+                )
     return content
 
 def default_system_utils(content, tool_text):
