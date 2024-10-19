@@ -739,7 +739,6 @@ _register_template(
         ]
     ),
     format_system=SystemFormatter(slots=["<|start_header_id|>system<|end_header_id|>\n\n{{content}}<|eot_id|>"], tool_format="llama3"),
-    format_assistant = StringFormatter(slots=["{{content}}"]),
     format_observation=ObservationFormatter(
         slots=[
             (
@@ -753,7 +752,8 @@ _register_template(
     format_function=FunctionFormatter(slots=[
             (
                 "<|python_tag|>{{function_content}}<eom_id>"
-            )
+            ),
+            {"eos_token"}
             ],
             tool_format="llama3"),
     format_prefix=EmptyFormatter(slots=[{"bos_token"}]),
