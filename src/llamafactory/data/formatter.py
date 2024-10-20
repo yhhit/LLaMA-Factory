@@ -118,8 +118,11 @@ class FunctionFormatter(Formatter):
         elements = []
         for name, arguments in functions:
             for slot in self.slots:
-                if isinstance(slot, str) and ("{{arguments}}" in slot):
-                    function_content = slot.replace("{{name}}", name).replace("{{arguments}}", arguments)
+                if isinstance(slot, str) and ("{{arguments}}" in slot):                    
+                    func = json.loads(slot)
+                    func['name']=name
+                    func['arguments']=arguments
+                    function_content =  json.dumps(func, ensure_ascii=False)
                 elif isinstance(slot, str) and ("{{function_content}}" in slot):
                     slot = slot.replace("{{function_content}}", function_content)
                     elements.append(slot)
