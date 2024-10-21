@@ -144,7 +144,7 @@ class LLama3ToolUtils(ToolUtils):
     @override
     @staticmethod
     def get_function_slots() -> SLOTS:
-        return ['{ "name": "{{name}}", "arguments": "{{arguments}}"}']
+        return ['{ "name": "{{name}}", "parameters": "{{parameters}}"}']
 
     @override
     @staticmethod

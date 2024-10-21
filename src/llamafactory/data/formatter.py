@@ -110,7 +110,7 @@ class FunctionFormatter(Formatter):
                 tool_calls = [tool_calls]
 
             for tool_call in tool_calls:
-                functions.append((tool_call["name"], json.dumps(tool_call["arguments"], ensure_ascii=False)))
+                functions.append((tool_call["name"], json.dumps(tool_call["arguments"], ensure_ascii = tool_call["ensure_ascii"] if "ensure_ascii" in tool_call else False)))
 
         except json.JSONDecodeError:
             raise RuntimeError("Invalid JSON format in function message: {}".format(str([content])))  # flat string
@@ -118,11 +118,11 @@ class FunctionFormatter(Formatter):
         elements = []
         for name, arguments in functions:
             for slot in self.slots:
-                if isinstance(slot, str) and ("{{arguments}}" in slot):                    
+                if isinstance(slot, str) and ("{{parameters}}" in slot):                    
                     func = json.loads(slot)
-                    func['name']=name
-                    func['arguments']=arguments
-                    function_content =  json.dumps(func, ensure_ascii=False)
+                    func['name'] = name
+                    func['parameters'] = arguments
+                    function_content = json.dumps(func, ensure_ascii=False)
                 elif isinstance(slot, str) and ("{{function_content}}" in slot):
                     slot = slot.replace("{{function_content}}", function_content)
                     elements.append(slot)
